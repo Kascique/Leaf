@@ -1,0 +1,10 @@
+# Ignore node modules
+node_modules
+
+# Ignore hidden Mac files
+.DS_Store
+
+# Ignore compiled files
+extension/*.js
+extension/*.js.map
+dist
