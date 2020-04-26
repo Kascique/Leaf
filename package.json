@@ -1,5 +1,5 @@
 {
-  "name": "p-json",
+  "name": "pretty-json",
   "version": "1.0.0",
   "description": "pretty json",
   "main": "index.js",
@@ -9,8 +9,8 @@
   "private": true,
   "scripts": {
     "dev": "npx webpack --mode=development --watch",
-    "build": "npx webpack",
-    "start": "yarn dev"
+    "clean-sourcemaps": "rm -rf extension/*.js.map",
+    "build": "yarn run clean-sourcemaps && npx webpack"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.104",

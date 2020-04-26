@@ -4,7 +4,7 @@
  * inspection of JSON structure.
  */
 
-import React from 'react';
+import React from "react";
 
 // import TreeView from 'devtools/client/shared/components/tree/TreeView';
 
@@ -30,9 +30,6 @@ export default function JsonPanel({
   searchFilter,
   actions,
 }: JsonPanelProps) {
-    
-    // Attach event Listeners
-    return(
-        <h3>JsonPanel</h3>
-    );
+  // Attach event Listeners
+  return <h3>JsonPanel</h3>;
 }

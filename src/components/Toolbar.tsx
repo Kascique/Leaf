@@ -1,19 +1,19 @@
 import React from 'react';
 
-type ToolbarButtonProps = {
+type TToolbarButtonProps = {
     active: Boolean,
     disabled: Boolean,
     children: String,
 }
 
-type ToolbarProps = {
+type TToolbarProps = {
     children: JSX.Element[] | JSX.Element,
 }
 
-export const ToolbarButton = ({ active, disabled, children }: ToolbarButtonProps) => {
+export const ToolbarButton = ({ active, disabled, children }: TToolbarButtonProps) => {
     return <button className="btn">{children}</button>;
 }
 
-export default function Toolbar({ children }: ToolbarProps) {
+export default function Toolbar({ children }: TToolbarProps) {
     return <div>{children}</div>;
 }

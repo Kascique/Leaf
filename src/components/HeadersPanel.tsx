@@ -4,53 +4,51 @@
  * received or response headers.
  */
 
-import React from 'react';
+import React from "react";
 
-export type HeaderItem = {
-    name: string,
-    value: string
-}
+type THeaderItem = {
+  name: string;
+  value: string;
+};
 
-type HeaderListProps = {
-    headers: HeaderItem[]
-}
+export const HeaderList = ({ headers }: { headers: THeaderItem[] }) => {
+  // Alphabatically sort headers
+  headers.sort((a, b) => (a.name > b.name ? 1 : -1));
 
-export const HeaderList = ({ headers }: HeaderListProps) => {
-    // Alphabatically sort headers
-    headers.sort((a, b) => a.name > b.name ? 1 : -1);
+  const headerRows = headers.map((header) => (
+    <tr className="header" key={header.name}>
+      <td className="header__name">{header.name}</td>
+      <td className="header__value">{header.value}</td>
+    </tr>
+  ));
 
-    const headerRows = headers.map((header) => (
-        <tr className="header" key={header.name}>
-            <td className="header__name">{header.name}</td>
-            <td className="header__value">{header.value}</td>
-        </tr>
-    ));
+  return (
+    <table>
+      <tbody>{headerRows}</tbody>
+    </table>
+  );
+};
 
-    return (
-        <table>
-            <tbody>{headerRows}</tbody>
-        </table>
-    )
-}
+export type THeadersData = {
+  requestHeaders?: THeaderItem[];
+  responseHeaders?: THeaderItem[];
+};
 
-type HeadersProps = {
-    data: {
-        requestHeaders: HeaderItem[],
-        responseHeaders: HeaderItem[]
-    }
-}
+export default function HeadersPanel({ data }: { data?: THeadersData }) {
+  if (!data) {
+    return <h3>No Entries logged</h3>;
+  }
 
-export default function HeadersPanel({ data } : HeadersProps) {
-    return (
-        <div className="headers-container">
-            <div className="headers">
-                <h2>Request Headers</h2>
-                <HeaderList headers={data.requestHeaders} />
-            </div>
-            <div className="headers">
-                <h2>Response Headers</h2>
-                <HeaderList headers={data.responseHeaders} />
-            </div>
-        </div>
-    )
+  return (
+    <div className="headers-container">
+      <div className="headers">
+        <h2>Request Headers</h2>
+        <HeaderList headers={data.requestHeaders} />
+      </div>
+      <div className="headers">
+        <h2>Response Headers</h2>
+        <HeaderList headers={data.responseHeaders} />
+      </div>
+    </div>
+  );
 }

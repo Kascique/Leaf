@@ -3,25 +3,24 @@ const requestFilter: any = {
   types: ["main_frame"],
 };
 
-const tabHeaders = new Map();
+const headersDB = new Map();
 type tabDataType = string | boolean | number | any[] | object;
 
 const deleteTabEntry = (tabId: number) => {
-  tabHeaders.delete(tabId);
+  headersDB.delete(tabId);
 };
 
 const saveTabEntry = (tabId: number, data: tabDataType) => {
-  tabHeaders.set(tabId, data);
+  headersDB.set(tabId, data);
 };
 
 const getTabEntry = (tabId: number) => {
-  return tabHeaders.get(tabId);
+  return headersDB.get(tabId);
 };
 
 // Record request headers
 chrome.webRequest.onSendHeaders.addListener(
-  (details) => {
-    console.log("Request Sent with headers", details);
+  (details: chrome.webRequest.WebRequestHeadersDetails) => {
     saveTabEntry(details.tabId, { requestHeaders: details.requestHeaders });
   },
   requestFilter,
@@ -30,8 +29,7 @@ chrome.webRequest.onSendHeaders.addListener(
 
 // Record response headers
 chrome.webRequest.onHeadersReceived.addListener(
-  (details) => {
-    console.log("Request successful with headers", details);
+  (details: chrome.webRequest.WebResponseHeadersDetails) => {
     let headers = {
       ...getTabEntry(details.tabId),
       responseHeaders: details.responseHeaders,
@@ -42,8 +40,8 @@ chrome.webRequest.onHeadersReceived.addListener(
   ["responseHeaders"]
 );
 
-// On error or request ignored delete tab's data
-const errorCallback = (details: any) => {
+// On error or request to get headers ignored, delete tab's data
+const errorCallback = (details: chrome.webRequest.WebResponseErrorDetails) => {
   deleteTabEntry(details.tabId);
 };
 
@@ -51,23 +49,31 @@ const errorCallback = (details: any) => {
 chrome.webRequest.onActionIgnored.addListener(errorCallback);
 chrome.webRequest.onErrorOccurred.addListener(errorCallback, requestFilter);
 
-chrome.runtime.onMessage.addListener((message, sender) => {
-  const { id } = sender.tab;
+chrome.runtime.onMessage.addListener(
+  (
+    message: any,
+    sender: chrome.runtime.MessageSender,
+    sendResponse: (response?: any) => void
+  ) => {
+    const { id, url } = sender.tab;
+    const shouldRenderUi = () => {
+      if (url.startsWith("file://") && url.endsWith(".json")) {
+        sendResponse({ render: true, headers: {} });
+      } else if (getTabEntry(id)) {
+        sendResponse({ render: true, headers: getTabEntry(id) });
+      } else {
+        sendResponse({ render: false });
+      }
+    };
 
-  switch (message.type) {
-    case "getHeaders":
-      chrome.tabs.sendMessage(
-        id,
-        { type: "headers", data: getTabEntry(id) },
-        (success) => {
-          if (success) {
-            deleteTabEntry(id);
-          }
-        }
-      );
-      break;
-    case "deleteTabEntry":
-      deleteTabEntry(id);
-      break;
+    switch (message.type) {
+      case "get-data":
+        shouldRenderUi();
+        deleteTabEntry(id);
+        break;
+      case "delete-tab-entry":
+        deleteTabEntry(id);
+        break;
+    }
   }
-});
+);
