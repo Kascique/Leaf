@@ -18,7 +18,7 @@ chrome.runtime.sendMessage(
     try {
       const rawContent = document.querySelector("pre").innerText;
       const jsonObj = JSON.parse(rawContent);
-      const data = { json: jsonObj, headers: headers };
+      const data = { json: jsonObj, ...(headers && {headers: headers}) };
 
       document.documentElement.innerHTML = `<div id="pretty-json-view"></div>`;
       ReactDOM.render(

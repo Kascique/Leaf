@@ -70,7 +70,7 @@ chrome.runtime.onMessage.addListener(
     const { id, url } = sender.tab;
     const shouldRenderUi = () => {
       if (url.startsWith("file://") && url.endsWith(".json")) {
-        sendResponse({ render: true, headers: {} });
+        sendResponse({ render: true });
       } else if (getTabEntry(id)) {
         sendResponse({ render: true, headers: getTabEntry(id) });
       } else {
