@@ -2,7 +2,7 @@ const requestFilter: any = {
   urls: ["<all_urls>"],
   types: ["main_frame"],
 };
-
+const jsonContentType = /^application\/([a-z]+\+)?json($|;)/;
 const headersDB = new Map();
 type tabDataType = string | boolean | number | any[] | object;
 
@@ -30,11 +30,23 @@ chrome.webRequest.onSendHeaders.addListener(
 // Record response headers
 chrome.webRequest.onHeadersReceived.addListener(
   (details: chrome.webRequest.WebResponseHeadersDetails) => {
-    let headers = {
-      ...getTabEntry(details.tabId),
-      responseHeaders: details.responseHeaders,
-    };
-    saveTabEntry(details.tabId, headers);
+    for (let header of details.responseHeaders) {
+      if (
+        header.name.toLowerCase() === "content-type" &&
+        header.value &&
+        jsonContentType.test(header.value)
+      ) {
+        let headers = {
+          ...getTabEntry(details.tabId),
+          responseHeaders: details.responseHeaders,
+        };
+        saveTabEntry(details.tabId, headers);
+        break;
+      } else {
+        deleteTabEntry(details.tabId);
+        break;
+      }
+    }
   },
   requestFilter,
   ["responseHeaders"]
