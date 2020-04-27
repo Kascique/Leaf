@@ -2,13 +2,12 @@ const path = require('path');
 
 const config = {
   entry: {
-    background: './src/background.ts',
     content: './src/content.tsx',
   },
 
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, '/extension'),
+    path: path.join(__dirname, '/extension'),
   },
 
   resolve: {

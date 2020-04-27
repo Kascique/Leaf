@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { THeadersData } from './components/HeadersPanel';
+import { THeadersData } from './components/Headers';
 
 /**
  * This script runs on every page. It communicates with the background script

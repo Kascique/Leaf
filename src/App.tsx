@@ -1,9 +1,13 @@
 import React from 'react';
-import HeadersPanel, { THeadersData } from './components/HeadersPanel';
+import JsonViewer from './components/JsonViewer';
+import HeadersPanel, { THeadersData } from './components/Headers';
 import './app.css';
 
+// const AUTO_EXPAND_MAX_SIZE = 100 * 1024;
+// const AUTO_EXPAND_MAX_LEVE = 7;
+
 type TAppProps = {
-  json: object;
+  json: any;
   headers?: THeadersData;
 };
 
@@ -13,7 +17,7 @@ export default function App({ json, headers }: TAppProps) {
       <div className="settings" />
       <div className="content">
         <HeadersPanel data={headers} />
-        <div>{json}</div>
+        <JsonViewer json={json} />
       </div>
     </div>
   );

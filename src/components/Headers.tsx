@@ -1,10 +1,9 @@
 /**
- * This template is responsible for rendering basic layout
- * of the 'Headers' panel. It displays HTTP headers groups such as
- * received or response headers.
+ * This component is responsible for rendering
+ * request and response headers.
  */
 
-import React from "react";
+import React from 'react';
 
 type THeaderItem = {
   name: string;
