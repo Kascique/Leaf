@@ -7,4 +7,3 @@ node_modules
 # Ignore compiled files
 extension/*.js
 extension/*.js.map
-dist

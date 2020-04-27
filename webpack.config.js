@@ -1,16 +1,18 @@
+const path = require('path');
+
 const config = {
   entry: {
-    background: "./src/background.ts",
-    content: "./src/content.tsx",
+    background: './src/background.ts',
+    content: './src/content.tsx',
   },
 
   output: {
-    filename: "[name].js",
-    path: __dirname + "/extension",
+    filename: '[name].js',
+    path: path.resolve(__dirname, '/extension'),
   },
 
   resolve: {
-    extensions: [".js", ".ts", ".tsx"],
+    extensions: ['.js', '.ts', '.tsx'],
   },
 
   module: {
@@ -20,19 +22,19 @@ const config = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "ts-loader",
+            loader: 'ts-loader',
           },
         ],
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
-        enforce: "pre",
+        enforce: 'pre',
         test: /\.js$/,
-        loader: "source-map-loader",
+        loader: 'source-map-loader',
       },
     ],
   },
@@ -40,8 +42,8 @@ const config = {
 
 module.exports = (env, argv) => {
   // Enable sourcemaps for debugging webpack's output.
-  if (argv.mode === "development") {
-    config.devtool = "source-map";
+  if (argv.mode === 'development') {
+    config.devtool = 'source-map';
   }
 
   return config;
