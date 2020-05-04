@@ -1,4 +1,4 @@
-# Pretty-JSON
+# Leaf
 The project is in active development, some parts may not work at first. Please check back soon.
 
 ## Development
