@@ -3,7 +3,7 @@ The project is in active development, some parts may not work at first. Please c
 
 ## Development
 
-- Start devloping
+- Start developing
   ```ssh
   yarn dev or npm dev
   ```
